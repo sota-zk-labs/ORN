@@ -2,7 +2,7 @@ use std::cmp::PartialEq;
 
 use clap::CommandFactory;
 use clap::{Parser, Subcommand};
-use tracing::info;
+use orn::const_values::get_constant_values;
 
 /// ORN.
 #[derive(Parser, Debug)]
@@ -33,21 +33,28 @@ async fn main() {
         println!(env!("APP_VERSION"));
         return;
     }
+
     match args.command {
-        None => {
-            Cli::command().print_help().unwrap();
-            return;
-        }
-        Some(c) => {
-            match c {
+        Some(command) => {
+            match command {
                 Commands::Version => {
-                    info!(env!("APP_VERSION"));
+                    println!(env!("APP_VERSION"));
                     return;
                 }
                 Commands::UpdateConst { path: _ } => {
+                    update_const().await;
                     return;
                 }
             }
         }
+        None => {
+            Cli::command().print_help().unwrap();
+            return;
+        }
     }
+}
+
+async fn update_const() -> () {
+    let constant_values = get_constant_values();
+    println!("constant_values = {:#?}", constant_values);
 }
