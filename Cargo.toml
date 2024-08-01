@@ -8,3 +8,4 @@ clap = { version = "4.5.13", features = ["derive"] }
 tokio = { version = "1.39.2", features = ["rt", "rt-multi-thread", "macros"] }
 toml = "0.8.19"
 serde = { version = "1.0.204", features = ["derive"] }
+math-parse = "1.0.2"

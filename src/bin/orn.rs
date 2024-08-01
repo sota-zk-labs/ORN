@@ -2,7 +2,7 @@ use std::cmp::PartialEq;
 
 use clap::CommandFactory;
 use clap::{Parser, Subcommand};
-use orn::const_values::get_constant_values;
+use orn::const_values::{get_constant_values};
 
 /// ORN.
 #[derive(Parser, Debug)]

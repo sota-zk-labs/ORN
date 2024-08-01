@@ -186,6 +186,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "97b3888a4aecf77e811145cadf6eef5901f4782c53886191b2f693f24761847c"
 
 [[package]]
+name = "math-parse"
+version = "1.0.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f866c1d6a37764fb19b2a5ede4ed10a76a76b47363e958647cade513d25c5fda"
+
+[[package]]
 name = "memchr"
 version = "2.7.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -214,6 +220,7 @@ name = "orn"
 version = "0.1.0"
 dependencies = [
  "clap",
+ "math-parse",
  "serde",
  "tokio",
  "toml",
