@@ -1,6 +1,6 @@
 # ORN
 
-[![License](https://img.shields.io/github/license/sota-zk/orn)](./LICENSE)
+[![License](https://img.shields.io/github/license/sota-zk-labs/orn)](./LICENSE)
 [![Continuous Integration](https://github.com/sota-zk/orn/actions/workflows/ci.yaml/badge.svg)](https://github.com/sota-zk/orn/actions/workflows/ci.yaml/badge.svg)
 
 ## Introduction
