@@ -2,8 +2,9 @@ use std::cmp::PartialEq;
 
 use clap::CommandFactory;
 use clap::{Parser, Subcommand};
-use orn::const_values::{get_constant_values};
-use orn::file_manager::{FileManager};
+use orn::const_values::get_constant_values;
+use orn::file_manager::FileManager;
+use orn::gen_const::gen_consts;
 
 /// ORN.
 #[derive(Parser, Debug)]
@@ -36,18 +37,16 @@ async fn main() {
     }
 
     match args.command {
-        Some(command) => {
-            match command {
-                Commands::Version => {
-                    println!(env!("APP_VERSION"));
-                    return;
-                }
-                Commands::UpdateConst { paths } => {
-                    update_const(&paths).await;
-                    return;
-                }
+        Some(command) => match command {
+            Commands::Version => {
+                println!(env!("APP_VERSION"));
+                return;
             }
-        }
+            Commands::UpdateConst { paths } => {
+                update_const(&paths).await;
+                return;
+            }
+        },
         None => {
             Cli::command().print_help().unwrap();
             return;
@@ -59,10 +58,8 @@ async fn update_const(paths: &Vec<String>) -> () {
     let constant_values = get_constant_values();
     println!("constant_values = {:#?}", constant_values);
 
-    let content = "1";
     let file_manager = FileManager::load(paths).unwrap();
-    file_manager.update(|file_content| {
-        eprintln!("file_content = {:#?}", file_content);
-        content.to_string()
-    }).unwrap()
+    file_manager
+        .update(|file_content| gen_consts(&file_content, &constant_values))
+        .unwrap()
 }
