@@ -8,7 +8,7 @@ use glob::glob;
 use crate::core_error::CoreError;
 
 pub struct FileManager {
-    files: HashMap::<String, PathBuf>,
+    files: HashMap<String, PathBuf>,
 }
 
 impl FileManager {
@@ -24,9 +24,7 @@ impl FileManager {
                 files.insert(path.display().to_string(), path);
             }
         }
-        Ok(Self {
-            files
-        })
+        Ok(Self { files })
     }
 }
 
@@ -51,5 +49,3 @@ impl FileManager {
         eprintln!("files = {:#?}", self.files);
     }
 }
-
-
