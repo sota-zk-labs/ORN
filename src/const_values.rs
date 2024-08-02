@@ -3,6 +3,7 @@ use math_parse::MathParse;
 use serde::Deserialize;
 
 const CONSTANT_VALUES: &str = include_str!("const_values.toml");
+const MAX_DEPTH: usize = 5;
 
 #[derive(Debug)]
 pub enum ConstantTypes {
@@ -25,26 +26,37 @@ pub fn get_variables_map(a: &HashMap<String, ConstantValue>) -> HashMap<String, 
 }
 
 pub fn get_constant_values() -> HashMap<String, ConstantValue> {
-    let constant_values = toml::from_str(CONSTANT_VALUES).unwrap();
-    let variables_map = get_variables_map(&constant_values);
-    constant_values.into_iter().map(|(k, mut v)| {
-        let value = match MathParse::parse(&v.value) {
-            Err(_) => {
-                v.value
-            }
-            Ok(expression) => {
-                match expression.solve_int(Some(&variables_map)) {
-                    Err(_) => {
-                        v.value
-                    }
-                    Ok(result) => {
-                        format!("0x{:x}", result).to_string()
+    let mut constant_values = toml::from_str(CONSTANT_VALUES).unwrap();
+    for _ in 0..MAX_DEPTH {
+        let mut has_changed = false;
+        let variables_map = get_variables_map(&constant_values);
+        constant_values = constant_values.into_iter().map(|(k, mut v)| {
+            let value = match MathParse::parse(&v.value) {
+                Err(_) => {
+                    v.value
+                }
+                Ok(expression) => {
+                    match expression.solve_int(Some(&variables_map)) {
+                        Err(_) => {
+                            v.value
+                        }
+                        Ok(result) => {
+                            let result = format!("0x{:x}", result).to_string();
+                            if v.value != result {
+                                has_changed = true
+                            }
+                            result
+                        }
                     }
                 }
-            }
-        };
-        v.value = value;
-        (k, v)
-    }).collect::<HashMap<_, _>>()
+            };
+            v.value = value;
+            (k, v)
+        }).collect::<HashMap<_, _>>();
+        if !has_changed {
+            break;
+        }
+    }
+    constant_values
 }
 

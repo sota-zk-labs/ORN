@@ -1,3 +1,5 @@
 CONSTANT_1 = { type = "u64", value = "0x5ec467b", comment = "asd" }
 CONSTANT_2 = { type = "u64", value = "0x5ec467cb", comment = "asd" }
 CONSTANT_3 = { type = "u64", value = "CONSTANT_1+CONSTANT_2", comment = "asd" }
+CONSTANT_4 = { type = "u64", value = "CONSTANT_3", comment = "asd" }
+CONSTANT_5 = { type = "u64", value = "CONSTANT_4+CONSTANT_2", comment = "asd" }
