@@ -3,6 +3,7 @@ use std::cmp::PartialEq;
 use clap::CommandFactory;
 use clap::{Parser, Subcommand};
 use orn::const_values::{get_constant_values};
+use orn::file_manager::{FileManager};
 
 /// ORN.
 #[derive(Parser, Debug)]
@@ -19,9 +20,9 @@ enum Commands {
     Version,
     /// Update constant values in Move files
     UpdateConst {
-        /// File paths, can be used multiple times
-        #[arg(short, long, default_value = ".")]
-        path: Vec<String>,
+        /// File paths, can be used multiple times, accept glob patterns
+        #[arg(short, long = "path", default_value = "**/*.move")]
+        paths: Vec<String>,
     },
 }
 
@@ -41,8 +42,8 @@ async fn main() {
                     println!(env!("APP_VERSION"));
                     return;
                 }
-                Commands::UpdateConst { path: _ } => {
-                    update_const().await;
+                Commands::UpdateConst { paths } => {
+                    update_const(&paths).await;
                     return;
                 }
             }
@@ -54,7 +55,14 @@ async fn main() {
     }
 }
 
-async fn update_const() -> () {
+async fn update_const(paths: &Vec<String>) -> () {
     let constant_values = get_constant_values();
     println!("constant_values = {:#?}", constant_values);
+
+    let content = "1";
+    let file_manager = FileManager::load(paths).unwrap();
+    file_manager.update(|file_content| {
+        eprintln!("file_content = {:#?}", file_content);
+        content.to_string()
+    }).unwrap()
 }
