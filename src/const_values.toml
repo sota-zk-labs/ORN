@@ -1,14 +1,46 @@
 BITWISE_BUILTIN_BIT = { type = "u256", value = "4", comment = "4" }
 BITWISE__RATIO = { type = "u256", value = "8", comment = "8" }
 BITWISE__ROW_RATIO = { type = "u256", value = "128", comment = "128" }
+BLOCK_HASH_OFFSET = { type = "u64", value = "3", comment = "3" }
+BLOCK_NUMBER_OFFSET = { type = "u64", value = "2", comment = "2" }
+BLS_MODULUS = { type = "u256", value = "52435875175126190479447740508185965837690552500527637822603658699938581184513", comment = "52435875175126190479447740508185965837690552500527637822603658699938581184513" }
+BYTES_PER_COMMITMENT = { type = "u64", value = "48", comment = "48" }
+BYTES_PER_FIELD_ELEMENT = { type = "u64", value = "32", comment = "32" }
+BYTES_PER_PROOF = { type = "u64", value = "48", comment = "48" }
 COMMITMENT_MASK = { type = "u256", value = "0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000000000000000000000", comment = "0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000000000000000000000" }
 COMMITMENT_SIZE_IN_BYTES = { type = "u64", value = "0x20", comment = "0x20" }
+CONFIG_HASH_OFFSET = { type = "u64", value = "4", comment = "4" }
+CONFIG_HASH_TAG = { type = "vector<u8>", value = 'b"STARKNET_1.0_STARKNET_CONFIG_HASH"', comment = "The hash of the StarkNet config" }
 CONSTRAINTS_DEGREE_BOUND = { type = "u64", value = "2", comment = "2" }
 CONTINUOUS_PAGE = { type = "u256", value = "1", comment = "1" }
 DILUTED_N_BITS = { type = "u256", value = "16", comment = "16" }
 DILUTED_SPACING = { type = "u8", value = "4", comment = "4" }
 ECDSA_BUILTIN_BIT = { type = "u256", value = "3", comment = "3" }
 EC_OP_BUILTIN_BIT = { type = "u256", value = "5", comment = "5" }
+EINVALID_BLOCK_NUMBER = { type = "u64", value = "0x20001", comment = "0x20001" }
+EINVALID_CONFIG_HASH = { type = "u64", value = "0x20003", comment = "0x20003" }
+EINVALID_FINAL_BLOCK_NUMBER = { type = "u64", value = "0x40007", comment = "0x40007" }
+EINVALID_KZG_COMMITMENT = { type = "u64", value = "0x50005", comment = "0x50005" }
+EINVALID_KZG_PROOF_SIZE = { type = "u64", value = "0x50003", comment = "0x50003" }
+EINVALID_KZG_SEGMENT_SIZE = { type = "u64", value = "0x50002", comment = "0x50002" }
+EINVALID_MESSAGE_SEGMENT_SIZE = { type = "u64", value = "0x40001", comment = "0x40001" }
+EINVALID_MESSAGE_TO_CONSUME = { type = "u64", value = "0x40005", comment = "0x40005" }
+EINVALID_PAYLOAD_LENGTH = { type = "u64", value = "0x40003", comment = "0x40003" }
+EINVALID_PREVIOUS_ROOT = { type = "u64", value = "0x20002", comment = "0x20002" }
+EINVALID_PRE_COMPILE_INPUT_SIZE = { type = "u64", value = "0x50004", comment = "0x50004" }
+EINVALID_Y_VALUE = { type = "u64", value = "0x50006", comment = "0x50006" }
+EMESSAGE_TOO_SHORT = { type = "u64", value = "0x40002", comment = "0x40002" }
+ENAMED_STORAGE_ALREADY_SET = { type = "u64", value = "0x30001", comment = "0x30001" }
+ENO_STATE_TRANSITION_PROOF = { type = "u64", value = "0x60001", comment = "0x60001" }
+EPOINT_EVALUATION_PRECOMPILE_CALL_FAILED = { type = "u64", value = "0x8001", comment = "0x8001" }
+ESTARKNET_OUTPUT_TOO_LONG = { type = "u64", value = "0x40006", comment = "0x40006" }
+ESTARKNET_OUTPUT_TOO_SHORT = { type = "u64", value = "0x40008", comment = "0x40008" }
+ETRUNCATED_MESSAGE_PAYLOAD = { type = "u64", value = "0x40004", comment = "0x40004" }
+EUNEXPECTED_BLOB_HASH_VERSION = { type = "u64", value = "0x70001", comment = "0x70001" }
+EUNEXPECTED_KZG_DA_FLAG = { type = "u64", value = "0x50001", comment = "0x50001" }
+EUNEXPECTED_POINT_EVALUATION_PRECOMPILE_OUTPUT = { type = "u64", value = "0x80002", comment = "0x80002" }
+EUNEXPECTED_VERSION_HASH = { type = "u64", value = "0x70002", comment = "0x70002" }
+FIELD_ELEMENTS_PER_BLOB = { type = "u256", value = "4096", comment = "4096" }
 FINAL_PC = { type = "u64", value = "INITIAL_PC + 4", comment = "INITIAL_PC + 4" }
 FRI_CTX_SIZE = { type = "u256", value = "FRI_CTX_TO_FRI_HALF_INV_GROUP_OFFSET + (FRI_GROUP_SIZE / 2)", comment = "FRI_CTX_TO_FRI_HALF_INV_GROUP_OFFSET + (FRI_GROUP_SIZE / 2)" }
 FRI_CTX_TO_COSET_EVALUATIONS_OFFSET = { type = "u256", value = "0", comment = "0" }
@@ -22,9 +54,11 @@ FRI_QUEUE_SIZE = { type = "u64", value = "MAX_N_QUERIES", comment = "MAX_N_QUERI
 FRI_QUEUE_SLOT_SIZE = { type = "u64", value = "3", comment = "3" }
 FRI_QUEUE_SLOT_SIZE_IN_BYTES = { type = "u256", value = "3 * 0x20", comment = "3 * 0x20" }
 GENERATOR_VAL = { type = "u256", value = "3", comment = "3" }
+HEADER_SIZE = { type = "u64", value = "6", comment = "6" }
 INDEX_SIZE_IN_BYTES = { type = "u64", value = "0x20", comment = "0x20" }
 INITIAL_PC = { type = "u64", value = "1", comment = "1" }
 KECCAK_BUILTIN_BIT = { type = "u256", value = "6", comment = "6" }
+KZG_SEGMENT_SIZE = { type = "u64", value = "5", comment = "5" }
 K_MODULUS = { type = "u256", value = "0x800000000000011000000000000000000000000000000000000000000000001", comment = "0x800000000000011000000000000000000000000000000000000000000000001" }
 K_MODULUS_TIMES_16 = { type = "u256", value = "0x8000000000000110000000000000000000000000000000000000000000000010", comment = "0x8000000000000110000000000000000000000000000000000000000000000010" }
 K_MONTGOMERY_R = { type = "u256", value = "0x7fffffffffffdf0ffffffffffffffffffffffffffffffffffffffffffffffe1", comment = "0x7fffffffffffdf0ffffffffffffffffffffffffffffffffffffffffffffffe1" }
@@ -37,8 +71,21 @@ MAX_FRI_STEPS = { type = "u64", value = "10", comment = "10" }
 MAX_N_MERKLE_VERIFIER_QUERIES = { type = "u64", value = "128", comment = "128" }
 MAX_N_QUERIES = { type = "u64", value = "48", comment = "48" }
 MAX_SUPPORTED_FRI_STEP_SIZE = { type = "u64", value = "4", comment = "4" }
+MAX_UINT128 = { type = "u256", value = "340282366920938463463374607431768211455", comment = "2 ^ 128 - 1" }
+MAX_UINT192 = { type = "u256", value = "6277101735386680763835789423207666416102355444464034512895", comment = "2 ^ 192 - 1" }
 MEMORY_PAIR_SIZE = { type = "u256", value = "2", comment = "2" }
 MERKLE_SLOT_SIZE_IN_BYTES = { type = "u64", value = "0x40", comment = "0x40" }
+MERKLE_UPDATE_OFFSET = { type = "u64", value = "0", comment = "0" }
+MESSAGE_TO_L1_FROM_ADDRESS_OFFSET = { type = "u64", value = "0", comment = "0" }
+MESSAGE_TO_L1_PAYLOAD_SIZE_OFFSET = { type = "u64", value = "2", comment = "2" }
+MESSAGE_TO_L1_PREFIX_SIZE = { type = "u64", value = "3", comment = "3" }
+MESSAGE_TO_L1_TO_ADDRESS_OFFSET = { type = "u64", value = "1", comment = "1" }
+MESSAGE_TO_L2_FROM_ADDRESS_OFFSET = { type = "u64", value = "0", comment = "0" }
+MESSAGE_TO_L2_NONCE_OFFSET = { type = "u64", value = "2", comment = "2" }
+MESSAGE_TO_L2_PAYLOAD_SIZE_OFFSET = { type = "u64", value = "4", comment = "4" }
+MESSAGE_TO_L2_PREFIX_SIZE = { type = "u64", value = "5", comment = "5" }
+MESSAGE_TO_L2_SELECTOR_OFFSET = { type = "u64", value = "3", comment = "3" }
+MESSAGE_TO_L2_TO_ADDRESS_OFFSET = { type = "u64", value = "1", comment = "1" }
 METADATA_OFFSET_TASK_N_TREE_PAIRS = { type = "u64", value = "2", comment = "2" }
 METADATA_OFFSET_TASK_OUTPUT_SIZE = { type = "u64", value = "0", comment = "0" }
 METADATA_OFFSET_TASK_PROGRAM_HASH = { type = "u64", value = "1", comment = "1" }
@@ -153,13 +200,16 @@ PEDERSEN_BUILTIN_BIT = { type = "u256", value = "1", comment = "1" }
 PEDERSEN_BUILTIN_RATIO = { type = "u256", value = "128", comment = "128" }
 PEDERSEN_BUILTIN_REPETITIONS = { type = "u256", value = "1", comment = "1" }
 PEDERSEN_BUILTIN_ROW_RATIO = { type = "u256", value = "2048", comment = "2048" }
+POINT_EVALUATION_PRECOMPILE_OUTPUT = { type = "vector<u8>", value = 'x"b2157d3a40131b14c4c675335465dffde802f0ce5218ad012284d7f275d1b37c"', comment = "b2157d3a40131b14c4c675335465dffde802f0ce5218ad012284d7f275d1b37c" }
 POSEIDON_BUILTIN_BIT = { type = "u256", value = "7", comment = "7" }
 POSEIDON__M = { type = "u256", value = "3", comment = "3" }
 POSEIDON__RATIO = { type = "u256", value = "8", comment = "8" }
 POSEIDON__ROUNDS_FULL = { type = "u256", value = "8", comment = "8" }
 POSEIDON__ROUNDS_PARTIAL = { type = "u256", value = "83", comment = "83" }
 POSEIDON__ROW_RATIO = { type = "u256", value = "128", comment = "128" }
+PROGRAM_HASH_TAG = { type = "vector<u8>", value = 'b"STARKNET_1.0_INIT_PROGRAM_HASH_UINT"', comment = "Random storage slot tags" }
 PROGRAM_SIZE = { type = "u256", value = "728", comment = "728" }
+PROOF_BYTES_LENGTH = { type = "u256", value = "48", comment = "48" }
 PROOF_PARAMS_FRI_STEPS_OFFSET = { type = "u64", value = "5", comment = "5" }
 PROOF_PARAMS_N_FRI_STEPS_OFFSET = { type = "u64", value = "4", comment = "4" }
 PUBLIC_MEMORY_STEP = { type = "u256", value = "16", comment = "16" }
@@ -168,4 +218,8 @@ RANGE_CHECK_BUILTIN_RATIO = { type = "u256", value = "8", comment = "8" }
 RANGE_CHECK_BUILTIN_ROW_RATIO = { type = "u256", value = "128", comment = "128" }
 RANGE_CHECK_N_PARTS = { type = "u256", value = "8", comment = "8" }
 REGULAR_PAGE = { type = "u256", value = "0", comment = "0" }
+STATE_STRUCT_TAG = { type = "vector<u8>", value = 'b"STARKNET_1.0_INIT_STARKNET_STATE_STRUCT"', comment = "STARKNET_1.0_INIT_STARKNET_STATE_STRUCT" }
 TWO_COMMITMENTS_SIZE_IN_BYTES = { type = "u64", value = "0x40", comment = "0x40" }
+USE_KZG_DA_OFFSET = { type = "u64", value = "5", comment = "5" }
+VERIFIER_ADDRESS_TAG = { type = "vector<u8>", value = 'b"STARKNET_1.0_INIT_VERIFIER_ADDRESS"', comment = "STARKNET_1.0_INIT_VERIFIER_ADDRESS" }
+VERSIONED_HASH_VERSION_KZG = { type = "vector<u8>", value = 'x"01"', comment = "01" }
