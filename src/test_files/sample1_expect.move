@@ -2,10 +2,10 @@ module verifier_addr::memory_access_utils_7 {
     // This line is used for generating constants DO NOT REMOVE!
     // 10
     const MAX_FRI_STEPS: u64 = 0xa;
-    // 4
-    const PROOF_PARAMS_N_FRI_STEPS_OFFSET: u64 = 0x4;
     // 5
     const PROOF_PARAMS_FRI_STEPS_OFFSET: u64 = 0x5;
+    // 4
+    const PROOF_PARAMS_N_FRI_STEPS_OFFSET: u64 = 0x4;
     // End of generating constants!
 
     use std::vector::borrow;
