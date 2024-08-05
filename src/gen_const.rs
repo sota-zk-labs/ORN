@@ -1,10 +1,13 @@
 use std::collections::{HashMap, HashSet};
+
 use const_format::concatcp;
 use fancy_regex::{Captures, Regex};
 
 use crate::const_values::ConstantValue;
 
+const SNAKE_CASE_PATTERN: &str = r"([A-Z][A-Z0-9]*[_[A-Z0-9]+]+)";
 const ANY_CHAR_PATTERN: &str = r"([^}]*)";
+const IMPORT_STATEMENT_PATTERN: &str = r"\s*use\s+.*::([^;]+);";
 const CONST_BLOCK_BEGIN: &str =
     "    // This line is used for generating constants DO NOT REMOVE!\n";
 const CONST_BLOCK_END: &str = "    // End of generating constants!\n";
@@ -28,24 +31,42 @@ fn create_const_block(consts: &HashSet<String>, table: &HashMap<String, Constant
     result
 }
 
-fn remove_import(file_content: &str, table: &HashMap<String, ConstantValue>) -> String {
-    let get_const_pattern = Regex::new(&format!(r"({})", get_const_regex(table))).unwrap();
-    let comma_pattern = Regex::new(r",+").unwrap();
-    Regex::new(&get_import_regex(table))
+fn remove_import(file_content: &str) -> String {
+    Regex::new(IMPORT_STATEMENT_PATTERN)
         .unwrap()
-        .replace_all(&file_content, |caps: &Captures| {
-            let new_line = caps.get(0).unwrap().as_str();
-            let new_line = new_line.chars().filter(|c| !c.is_whitespace()).collect::<String>();
-            let new_line = get_const_pattern.replace_all(&new_line, |_: &Captures| {
-                ""
-            });
-            let new_line = comma_pattern.replace_all(&new_line, |_: &Captures| {
-                ","
-            }).replace(",}", "}").replace("{,", "{");
-            if new_line.contains("{}") || new_line.contains("::;") {
-                "".to_string()
+        .replace_all(file_content, |cap: &Captures| {
+            let mut new_statement = cap[1].trim().to_string();
+            if Regex::new(SNAKE_CASE_PATTERN)
+                .unwrap()
+                .is_match(&new_statement)
+                .unwrap()
+            {
+                if new_statement.starts_with('{') {
+                    // Case 1: CONST,
+                    new_statement = Regex::new(&format!(r"{}\s*,\s*", SNAKE_CASE_PATTERN))
+                        .unwrap()
+                        .replace_all(&new_statement, |_: &Captures| "")
+                        .to_string();
+                    // Case 2: , CONST and CONST
+                    new_statement = Regex::new(&format!(r",?\s*{}\s*", SNAKE_CASE_PATTERN))
+                        .unwrap()
+                        .replace_all(&new_statement, |_: &Captures| "")
+                        .to_string();
+                } else {
+                    new_statement = "".to_string();
+                };
+                if new_statement.ends_with("{}") {
+                    new_statement = "".to_string();
+                }
+                if new_statement.is_empty() {
+                    "".to_string()
+                } else {
+                    cap[0]
+                        .replace(cap[1].to_string().as_str(), new_statement.as_ref())
+                        .to_string()
+                }
             } else {
-                format!("    use {}\n", new_line[3..new_line.len()].to_string())
+                cap[0].to_string()
             }
         })
         .to_string()
@@ -53,26 +74,32 @@ fn remove_import(file_content: &str, table: &HashMap<String, ConstantValue>) -> 
 
 pub fn get_import_regex(table: &HashMap<String, ConstantValue>) -> String {
     let any_character = r"[a-zA-Z0-9_:,{}()\s]*";
-    format!(r"    use\s+{}({}){};\n",
-            any_character,
-            get_const_regex(table),
-            any_character,
-    ).to_string()
+    format!(
+        r"    use\s+{}({}){};\n",
+        any_character,
+        get_const_regex(table),
+        any_character,
+    )
+    .to_string()
 }
 
 pub fn get_const_funcs_regex(table: &HashMap<String, ConstantValue>) -> String {
-    format!("{}({}){}{}{}",
-            r"\s*public fun ",
-            get_const_regex(table),
-            r"\(\)\s*:\s*(\w+)\s*\{\s*",
-            ANY_CHAR_PATTERN,
-            r"*\}").to_string()
+    format!(
+        "{}({}){}{}{}",
+        r"\s*public fun ",
+        get_const_regex(table),
+        r"\(\)\s*:\s*(\w+)\s*\{\s*",
+        ANY_CHAR_PATTERN,
+        r"*\}"
+    )
+    .to_string()
 }
 
 pub fn get_const_regex(table: &HashMap<String, ConstantValue>) -> String {
-    let result = table.iter().map(|(k, _)| k).fold("".to_string(), |acc, k| {
-        format!("{}({})|", acc, k)
-    });
+    let result = table
+        .iter()
+        .map(|(k, _)| k)
+        .fold("".to_string(), |acc, k| format!("{}({})|", acc, k));
     result[0..result.len() - 1].to_string()
 }
 
@@ -87,29 +114,23 @@ pub fn gen_consts(file_content: &str, table: &HashMap<String, ConstantValue>) ->
         })
         .to_string();
 
-
-    // find all constant usages, remove '()' if it's a function call
+    // remove '()' if it's a constant function call
     let mut consts = HashSet::<String>::new();
-    let mut funcs = vec![];
-    let const_regex_func_calls = format!("({}){}", get_const_regex(table), r"(\(\))?");
+    let const_regex_func_calls = format!(r"{}(\(\))?", SNAKE_CASE_PATTERN);
     result = Regex::new(&const_regex_func_calls)
         .unwrap()
         .replace_all(&result, |caps: &Captures| {
             let name = caps[1].to_string();
-            // const not in table, so don't replace
-            consts.insert(name.clone());
-            // add imported function for removing later
-            if caps[0].to_string().ends_with("()")
-                && !funcs.contains(&name)
-                && !declared_funcs.contains(&name)
-            {
-                funcs.push(name.clone());
+            if table.contains_key(&name) {
+                consts.insert(name.clone());
+                name
+            } else {
+                caps[0].to_string()
             }
-            name
         })
         .to_string();
 
-    result = remove_import(&result, &table);
+    result = remove_import(&result);
 
     // insert constant block into the beginning of the module
     let reg = Regex::new(concatcp!(
@@ -117,7 +138,7 @@ pub fn gen_consts(file_content: &str, table: &HashMap<String, ConstantValue>) ->
         ANY_CHAR_PATTERN,
         CONST_BLOCK_END
     ))
-        .unwrap();
+    .unwrap();
     // if constant block was generated before
     if reg.is_match(&result).unwrap() {
         result = reg
@@ -146,21 +167,13 @@ mod test {
         let file_content = include_str!("./test_files/sample1_input.move");
         let refined_content = include_str!("./test_files/sample1_expect.move");
         let output = gen_consts(file_content, &get_constant_values());
-        assert_eq!(
-            refined_content,
-            output,
-            "failed"
-        );
+        assert_eq!(refined_content, output, "failed");
     }
     #[test]
     fn test_gen_consts_sample2() {
         let file_content = include_str!("./test_files/sample2_input.move");
         let refined_content = include_str!("./test_files/sample2_expect.move");
         let output = gen_consts(file_content, &get_constant_values());
-        assert_eq!(
-            refined_content,
-            output,
-            "failed"
-        );
+        assert_eq!(refined_content, output, "failed");
     }
 }

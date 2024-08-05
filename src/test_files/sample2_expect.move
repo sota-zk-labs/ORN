@@ -24,8 +24,6 @@ module verifier_addr::stark_verifier_7 {
     const MAX_FRI_STEPS: u64 = 0xa;
     // 48
     const MAX_N_QUERIES: u64 = 0x30;
-    // 4
-    const MAX_SUPPORTED_FRI_STEP_SIZE: u64 = 0x4;
     // 0x1
     const MM_BLOW_UP_FACTOR: u64 = 0x1;
     // 0xa
