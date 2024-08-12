@@ -21,6 +21,7 @@ EINVALID_BLOCK_NUMBER = { type = "u64", value = "0x20001", comment = "0x20001" }
 EINVALID_CONFIG_HASH = { type = "u64", value = "0x20003", comment = "0x20003" }
 EINVALID_FINAL_BLOCK_NUMBER = { type = "u64", value = "0x40007", comment = "0x40007" }
 EINVALID_KZG_COMMITMENT = { type = "u64", value = "0x50005", comment = "0x50005" }
+EINVALID_KZG_COMMITMENT_SIZE = { type = "u64", value = "0x50007", comment = "0x50007" }
 EINVALID_KZG_PROOF_SIZE = { type = "u64", value = "0x50003", comment = "0x50003" }
 EINVALID_KZG_SEGMENT_SIZE = { type = "u64", value = "0x50002", comment = "0x50002" }
 EINVALID_MESSAGE_SEGMENT_SIZE = { type = "u64", value = "0x40001", comment = "0x40001" }
@@ -29,6 +30,7 @@ EINVALID_PAYLOAD_LENGTH = { type = "u64", value = "0x40003", comment = "0x40003"
 EINVALID_PREVIOUS_ROOT = { type = "u64", value = "0x20002", comment = "0x20002" }
 EINVALID_PRE_COMPILE_INPUT_SIZE = { type = "u64", value = "0x50004", comment = "0x50004" }
 EINVALID_Y_VALUE = { type = "u64", value = "0x50006", comment = "0x50006" }
+EINVALID_Z_VALUE = { type = "u64", value = "0x50008", comment = "0x50008" }
 EMESSAGE_TOO_SHORT = { type = "u64", value = "0x40002", comment = "0x40002" }
 ENAMED_STORAGE_ALREADY_SET = { type = "u64", value = "0x30001", comment = "0x30001" }
 ENO_STATE_TRANSITION_PROOF = { type = "u64", value = "0x60001", comment = "0x60001" }
@@ -53,6 +55,9 @@ FRI_MIN_STEP_SIZE = { type = "u256", value = "2", comment = "2" }
 FRI_QUEUE_SIZE = { type = "u64", value = "MAX_N_QUERIES", comment = "MAX_N_QUERIES" }
 FRI_QUEUE_SLOT_SIZE = { type = "u64", value = "3", comment = "3" }
 FRI_QUEUE_SLOT_SIZE_IN_BYTES = { type = "u256", value = "3 * 0x20", comment = "3 * 0x20" }
+G1_GENERATOR = { type = "vector<u8>", value = 'x"97f1d3a73197d7942695638c4fa9ac0fc3688c4f9774b905a14e3a3f171bac586c55e83ff97a1aeffb3af00adb22c6bb"', comment = "G1 Generator" }
+G2S_SETUP = { type = "vector<u8>", value = 'x"b5bfd7dd8cdeb128843bc287230af38926187075cbfbefa81009a2ce615ac53d2914e5870cb452d2afaaab24f3499f72185cbfee53492714734429b7b38608e23926c911cceceac9a36851477ba4c60b087041de621000edc98edada20c1def2"', comment = "G2 secret" }
+G2_GENERATOR = { type = "vector<u8>", value = 'x"93e02b6052719f607dacd3a088274f65596bd0d09920b61ab5da61bbdc7f5049334cf11213945d57e5ac7d055d042b7e024aa2b2f08f0a91260805272dc51051c6e47ad4fa403b02b4510b647ae3d1770bac0326a805bbefd48056c8c121bdb8"', comment = "G2 generator" }
 GENERATOR_VAL = { type = "u256", value = "3", comment = "3" }
 HEADER_SIZE = { type = "u64", value = "6", comment = "6" }
 INDEX_SIZE_IN_BYTES = { type = "u64", value = "0x20", comment = "0x20" }
