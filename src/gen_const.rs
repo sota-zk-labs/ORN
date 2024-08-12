@@ -10,7 +10,7 @@ const ANY_CHAR_PATTERN: &str = r"([^}]*)";
 const IMPORT_STATEMENT_PATTERN: &str = r"\s*use\s+.*::([^;]+);";
 const CONST_BLOCK_BEGIN: &str =
     "    // This line is used for generating constants DO NOT REMOVE!\n";
-const CONST_BLOCK_END: &str = "    // End of generating constants!";
+const CONST_BLOCK_END: &str = "    // End of generating constants!\n\n";
 
 fn create_const_block(consts: &HashSet<String>, table: &HashMap<String, ConstantValue>) -> String {
     if consts.is_empty() {
@@ -158,10 +158,13 @@ pub fn gen_consts(file_content: &str, table: &HashMap<String, ConstantValue>) ->
 
     // insert constant block into the beginning of the module
     if !consts.is_empty() {
-        let first_left_cb = result.find('{').unwrap();
+        let mut first_left_cb = result.find('{').unwrap();
+        while result.as_bytes()[first_left_cb] != u8::try_from('\n').unwrap() {
+            first_left_cb += 1;
+        }
         result.insert_str(
             first_left_cb + 1,
-            format!("\n{}", create_const_block(&consts, table)).as_str(),
+            create_const_block(&consts, table).as_str(),
         );
     }
 
