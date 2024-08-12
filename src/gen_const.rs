@@ -10,7 +10,7 @@ const ANY_CHAR_PATTERN: &str = r"([^}]*)";
 const IMPORT_STATEMENT_PATTERN: &str = r"\s*use\s+.*::([^;]+);";
 const CONST_BLOCK_BEGIN: &str =
     "    // This line is used for generating constants DO NOT REMOVE!\n";
-const CONST_BLOCK_END: &str = "    // End of generating constants!\n";
+const CONST_BLOCK_END: &str = "    // End of generating constants!";
 
 fn create_const_block(consts: &HashSet<String>, table: &HashMap<String, ConstantValue>) -> String {
     if consts.is_empty() {
