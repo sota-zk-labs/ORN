@@ -135,7 +135,7 @@ pub fn gen_consts(file_content: &str, table: &HashMap<String, ConstantValue>) ->
         CONST_BLOCK_END
     ))
     .unwrap()
-    .replace_all(&result, |_: &Captures| "")
+    .replace_all(&result, |_: &Captures| format!("{}{}", CONST_BLOCK_BEGIN, CONST_BLOCK_END))
     .to_string();
 
     // remove '()' if it's a constant function call
@@ -156,16 +156,22 @@ pub fn gen_consts(file_content: &str, table: &HashMap<String, ConstantValue>) ->
 
     result = remove_import(&result, table);
 
-    // insert constant block into the beginning of the module
+    // insert constants block
     if !consts.is_empty() {
-        let mut first_left_cb = result.find('{').unwrap();
-        while result.as_bytes()[first_left_cb] != u8::try_from('\n').unwrap() {
-            first_left_cb += 1;
+        // replace old constants block with new block
+        if result.contains(format!("{}{}", CONST_BLOCK_BEGIN, CONST_BLOCK_END).as_str()) {
+            result = result.replace(format!("{}{}", CONST_BLOCK_BEGIN, CONST_BLOCK_END).as_str(), create_const_block(&consts, table).as_str());
+        } else {
+            // insert into the beginning of the module
+            let mut first_left_cb = result.find('{').unwrap();
+            while result.as_bytes()[first_left_cb] != u8::try_from('\n').unwrap() {
+                first_left_cb += 1;
+            }
+            result.insert_str(
+                first_left_cb + 1,
+                create_const_block(&consts, table).as_str(),
+            );
         }
-        result.insert_str(
-            first_left_cb + 1,
-            create_const_block(&consts, table).as_str(),
-        );
     }
 
     result
