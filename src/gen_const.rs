@@ -127,7 +127,6 @@ pub fn gen_consts(file_content: &str, table: &HashMap<String, ConstantValue>) ->
             ""
         })
         .to_string();
-
     // remove constants block if it was generated before
     result = Regex::new(concatcp!(
         CONST_BLOCK_BEGIN,
@@ -140,16 +139,23 @@ pub fn gen_consts(file_content: &str, table: &HashMap<String, ConstantValue>) ->
 
     // remove '()' if it's a constant function call
     let mut consts = HashSet::<String>::new();
-    let const_regex_func_calls = format!(r"{}(\(\))?", SNAKE_CASE_PATTERN);
+    let const_regex_func_calls = format!(r"(.*?[^\w]*({}))(\(\))?", get_const_regex(table));
+    let comment_regex = Regex::new(r"^\s+\/\/").unwrap();
     result = Regex::new(&const_regex_func_calls)
         .unwrap()
         .replace_all(&result, |caps: &Captures| {
-            let name = caps[1].to_string();
+            let whole = caps[0].to_string();
+            if comment_regex.is_match(&whole).unwrap() {
+                return whole;
+            }
+            let wrapped_name = caps[1].to_string();
+            let name = caps[2].to_string();
+
             if table.contains_key(&name) {
                 consts.insert(name.clone());
-                name
+                wrapped_name
             } else {
-                caps[0].to_string()
+                whole
             }
         })
         .to_string();

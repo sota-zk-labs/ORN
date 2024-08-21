@@ -24,6 +24,8 @@ module verifier_addr::stark_verifier_7 {
     const MAX_FRI_STEPS: u64 = 0xa;
     // 48
     const MAX_N_QUERIES: u64 = 0x30;
+    // 4
+    const MAX_SUPPORTED_FRI_STEP_SIZE: u64 = 0x4;
     // 1
     const MM_BLOW_UP_FACTOR: u64 = 0x1;
     // 10
@@ -34,8 +36,6 @@ module verifier_addr::stark_verifier_7 {
     const MM_COMPOSITION_OODS_VALUES: u64 = 0x227;
     // 1178
     const MM_COMPOSITION_QUERY_RESPONSES: u64 = 0x49a;
-    // 551
-    const MM_CONSTRAINT_POLY_ARGS_END: u64 = 0x227;
     // 317
     const MM_CONSTRAINT_POLY_ARGS_START: u64 = 0x13d;
     // 1277
@@ -58,8 +58,6 @@ module verifier_addr::stark_verifier_7 {
     const MM_FRI_LAST_LAYER_PTR: u64 = 0x13c;
     // 109
     const MM_FRI_QUEUE: u64 = 0x6d;
-    // 294
-    const MM_FRI_STEP_SIZES_PTR: u64 = 0x126;
     // 326
     const MM_HALF_OFFSET_SIZE: u64 = 0x146;
     // 327
@@ -224,6 +222,7 @@ module verifier_addr::stark_verifier_7 {
               g^(bitReverse(idx, log_evalDomainSize).
     */
     fun adjust_query_indices_and_prepare_eval_points(ctx: &mut vector<u256>) {
+        // queuePtr + i * MERKLE_SLOT_SIZE_IN_BYTES gives the i'th index in the queue.
         let fri_queue_slot_size = FRI_QUEUE_SLOT_SIZE;
         let n_unique_queries = (*borrow(ctx, MM_N_UNIQUE_QUERIES) as u64);
         let fri_queue = MM_FRI_QUEUE;
@@ -570,7 +569,7 @@ module verifier_addr::stark_verifier_7 {
         validate_fri_params(&fri_step_sizes, log_trace_length, log_fri_last_layer_deg_bound);
 
         // This assignment is required for the function `getFriStepSizes` in original contract, but we don't need it here
-        // set_el(&mut ctx, MM_FRI_STEP_SIZES_PTR, (length(&fri_step_sizes) as u256));
+        // set_el(&mut ctx, MM_FRI_STEP_SIZES_PTR(), (length(&fri_step_sizes) as u256));
 
         set_el(&mut ctx, MM_FRI_LAST_LAYER_DEG_BOUND, (1u256 << (log_fri_last_layer_deg_bound as u8)));
         set_el(&mut ctx, MM_TRACE_LENGTH, (1u256 << (log_trace_length as u8)));
@@ -840,8 +839,8 @@ module verifier_addr::stark_verifier_7 {
         // let composition_from_trace_value;
         // address
         // lconstraintPoly = address(constraintPoly);
-        // let offset = 1 + MM_CONSTRAINT_POLY_ARGS_START;
-        // let size = MM_CONSTRAINT_POLY_ARGS_END - MM_CONSTRAINT_POLY_ARGS_START;
+        // let offset = 1 + MM_CONSTRAINT_POLY_ARGS_START();
+        // let size = MM_CONSTRAINT_POLY_ARGS_END() - MM_CONSTRAINT_POLY_ARGS_START;
         // assembly {
         //     // Call CpuConstraintPoly contract.
         //     let p = mload(0x40)
@@ -853,8 +852,8 @@ module verifier_addr::stark_verifier_7 {
         // }
 
         // let claimed_composition = fadd(
-        //     *borrow(ctx, MM_COMPOSITION_OODS_VALUES),
-        //     fmul(*borrow(ctx, MM_OODS_POINT), *borrow(ctx, MM_COMPOSITION_OODS_VALUES + 1))
+        //     *borrow(ctx, MM_COMPOSITION_OODS_VALUES()),
+        //     fmul(*borrow(ctx, MM_OODS_POINT()), *borrow(ctx, MM_COMPOSITION_OODS_VALUES + 1))
         // );
         //
         // assert!(

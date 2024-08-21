@@ -91,6 +91,7 @@ module verifier_addr::stark_verifier_7 {
               g^(bitReverse(idx, log_evalDomainSize).
     */
     fun adjust_query_indices_and_prepare_eval_points(ctx: &mut vector<u256>) {
+        // queuePtr + i * MERKLE_SLOT_SIZE_IN_BYTES gives the i'th index in the queue.
         let fri_queue_slot_size = FRI_QUEUE_SLOT_SIZE();
         let n_unique_queries = (*borrow(ctx, MM_N_UNIQUE_QUERIES()) as u64);
         let fri_queue = MM_FRI_QUEUE();

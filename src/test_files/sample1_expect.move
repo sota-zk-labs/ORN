@@ -18,8 +18,6 @@ module verifier_addr::fri_layer {
     const MAX_COSET_SIZE: u256 = 0x10;
     // 64
     const MERKLE_SLOT_SIZE_IN_BYTES: u64 = 0x40;
-    // 1
-    const ONE_VAL: u256 = 0x1;
     // End of generating constants!
 
     use aptos_std::aptos_hash::keccak256;
