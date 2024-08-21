@@ -94,7 +94,7 @@ pub fn get_import_regex(table: &HashMap<String, ConstantValue>) -> String {
         get_const_regex(table),
         any_character,
     )
-    .to_string()
+        .to_string()
 }
 
 pub fn get_const_funcs_regex(table: &HashMap<String, ConstantValue>) -> String {
@@ -106,7 +106,7 @@ pub fn get_const_funcs_regex(table: &HashMap<String, ConstantValue>) -> String {
         ANY_CHAR_PATTERN,
         r"*\}"
     )
-    .to_string()
+        .to_string()
 }
 
 pub fn get_const_regex(table: &HashMap<String, ConstantValue>) -> String {
@@ -134,9 +134,9 @@ pub fn gen_consts(file_content: &str, table: &HashMap<String, ConstantValue>) ->
         ANY_CHAR_PATTERN,
         CONST_BLOCK_END
     ))
-    .unwrap()
-    .replace_all(&result, |_: &Captures| format!("{}{}", CONST_BLOCK_BEGIN, CONST_BLOCK_END))
-    .to_string();
+        .unwrap()
+        .replace_all(&result, |_: &Captures| format!("{}{}", CONST_BLOCK_BEGIN, CONST_BLOCK_END))
+        .to_string();
 
     // remove '()' if it's a constant function call
     let mut consts = HashSet::<String>::new();
@@ -187,13 +187,13 @@ mod test {
         let file_content = include_str!("./test_files/sample1_input.move");
         let refined_content = include_str!("./test_files/sample1_expect.move");
         let output = gen_consts(file_content, &get_constant_values());
-        assert_eq!(refined_content, output, "failed");
+        assert_eq!(output, refined_content, "failed");
     }
     #[test]
     fn test_gen_consts_sample2() {
         let file_content = include_str!("./test_files/sample2_input.move");
         let refined_content = include_str!("./test_files/sample2_expect.move");
         let output = gen_consts(file_content, &get_constant_values());
-        assert_eq!(refined_content, output, "failed");
+        assert_eq!(output, refined_content, "failed");
     }
 }

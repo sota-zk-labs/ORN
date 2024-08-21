@@ -24,97 +24,97 @@ module verifier_addr::stark_verifier_7 {
     const MAX_FRI_STEPS: u64 = 0xa;
     // 48
     const MAX_N_QUERIES: u64 = 0x30;
-    // 0x1
+    // 1
     const MM_BLOW_UP_FACTOR: u64 = 0x1;
-    // 0xa
+    // 10
     const MM_CHANNEL: u64 = 0xa;
-    // 0x166
+    // 358
     const MM_COMPOSITION_ALPHA: u64 = 0x166;
-    // 0x227
+    // 551
     const MM_COMPOSITION_OODS_VALUES: u64 = 0x227;
-    // 0x49a
+    // 1178
     const MM_COMPOSITION_QUERY_RESPONSES: u64 = 0x49a;
-    // 0x227
+    // 551
     const MM_CONSTRAINT_POLY_ARGS_END: u64 = 0x227;
-    // 0x13d
+    // 317
     const MM_CONSTRAINT_POLY_ARGS_START: u64 = 0x13d;
-    // 0x4fd
+    // 1277
     const MM_CONTEXT_SIZE: u64 = 0x4fd;
-    // 0x4
+    // 4
     const MM_EVAL_DOMAIN_GENERATOR: u64 = 0x4;
-    // 0x0
+    // 0
     const MM_EVAL_DOMAIN_SIZE: u64 = 0x0;
-    // 0x149
+    // 329
     const MM_FINAL_AP: u64 = 0x149;
-    // 0x14a
+    // 330
     const MM_FINAL_PC: u64 = 0x14a;
-    // 0x131
+    // 305
     const MM_FRI_COMMITMENTS: u64 = 0x131;
-    // 0x127
+    // 295
     const MM_FRI_EVAL_POINTS: u64 = 0x127;
-    // 0x13b
+    // 315
     const MM_FRI_LAST_LAYER_DEG_BOUND: u64 = 0x13b;
-    // 0x13c
+    // 316
     const MM_FRI_LAST_LAYER_PTR: u64 = 0x13c;
-    // 0x6d
+    // 109
     const MM_FRI_QUEUE: u64 = 0x6d;
-    // 0x126
+    // 294
     const MM_FRI_STEP_SIZES_PTR: u64 = 0x126;
-    // 0x146
+    // 326
     const MM_HALF_OFFSET_SIZE: u64 = 0x146;
-    // 0x147
+    // 327
     const MM_INITIAL_AP: u64 = 0x147;
-    // 0x148
+    // 328
     const MM_INITIAL_PC: u64 = 0x148;
-    // 0x160
+    // 352
     const MM_INTERACTION_ELEMENTS: u64 = 0x160;
-    // 0x2
+    // 2
     const MM_LOG_EVAL_DOMAIN_SIZE: u64 = 0x2;
-    // 0x4fa
+    // 1274
     const MM_LOG_N_STEPS: u64 = 0x4fa;
-    // 0x14c
+    // 332
     const MM_MEMORY__MULTI_COLUMN_PERM__HASH_INTERACTION_ELM0: u64 = 0x14c;
-    // 0x14b
+    // 331
     const MM_MEMORY__MULTI_COLUMN_PERM__PERM__INTERACTION_ELM: u64 = 0x14b;
-    // 0x14d
+    // 333
     const MM_MEMORY__MULTI_COLUMN_PERM__PERM__PUBLIC_MEMORY_PROD: u64 = 0x14d;
-    // 0xd
+    // 13
     const MM_MERKLE_QUEUE: u64 = 0xd;
-    // 0x4fb
+    // 1275
     const MM_N_PUBLIC_MEM_ENTRIES: u64 = 0x4fb;
-    // 0x4fc
+    // 1276
     const MM_N_PUBLIC_MEM_PAGES: u64 = 0x4fc;
-    // 0x9
+    // 9
     const MM_N_UNIQUE_QUERIES: u64 = 0x9;
-    // 0x145
+    // 325
     const MM_OFFSET_SIZE: u64 = 0x145;
-    // 0x259
+    // 601
     const MM_OODS_ALPHA: u64 = 0x259;
-    // 0x8
+    // 8
     const MM_OODS_COMMITMENT: u64 = 0x8;
-    // 0x229
+    // 553
     const MM_OODS_EVAL_POINTS: u64 = 0x229;
-    // 0x15f
+    // 351
     const MM_OODS_POINT: u64 = 0x15f;
-    // 0x167
+    // 359
     const MM_OODS_VALUES: u64 = 0x167;
-    // 0x3
+    // 3
     const MM_PROOF_OF_WORK_BITS: u64 = 0x3;
-    // 0x5
+    // 5
     const MM_PUBLIC_INPUT_PTR: u64 = 0x5;
-    // 0x14e
+    // 334
     const MM_RANGE_CHECK16__PERM__INTERACTION_ELM: u64 = 0x14e;
-    // 0x151
+    // 337
     const MM_RANGE_CHECK_MAX: u64 = 0x151;
-    // 0x150
+    // 336
     const MM_RANGE_CHECK_MIN: u64 = 0x150;
-    // 0x6
+    // 6
     const MM_TRACE_COMMITMENT: u64 = 0x6;
-    // 0x15e
+    // 350
     const MM_TRACE_GENERATOR: u64 = 0x15e;
-    // 0x144
+    // 324
     const MM_TRACE_LENGTH: u64 = 0x144;
-    // 0x25a
+    // 602
     const MM_TRACE_QUERY_RESPONSES: u64 = 0x25a;
     // 124
     const N_COEFFICIENTS: u256 = 0x7c;
@@ -161,7 +161,6 @@ module verifier_addr::stark_verifier_7 {
     // 0
     const REGULAR_PAGE: u256 = 0x0;
     // End of generating constants!
-
 
     use std::vector::{length, borrow, slice, append};
     use aptos_std::aptos_hash::keccak256;

@@ -1,5 +1,4 @@
 module verifier_addr::stark_verifier_7 {
-
     use std::vector::{length, borrow, slice, append};
     use aptos_std::aptos_hash::keccak256;
     use verifier_addr::cpu_oods_7;
