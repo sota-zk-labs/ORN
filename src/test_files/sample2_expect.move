@@ -1,4 +1,13 @@
 module verifier_addr::stark_verifier_7 {
+    use std::vector::{length, borrow, slice, append};
+    use aptos_std::aptos_hash::keccak256;
+    use verifier_addr::cpu_oods_7;
+    use verifier_addr::merkle_statement_verifier;
+    use verifier_addr::fri_statement_verifier_7;
+    use verifier_addr::memory_access_utils_7::{get_fri_step_sizes};
+    use lib_addr::math_mod::{mod_mul, mod_exp};
+    use verifier_addr::fact_registry::is_valid;
+
     // This line is used for generating constants DO NOT REMOVE!
     // 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000000000000000000000
     const COMMITMENT_MASK: u256 = 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000000000000000000000;
@@ -160,14 +169,7 @@ module verifier_addr::stark_verifier_7 {
     const REGULAR_PAGE: u256 = 0x0;
     // End of generating constants!
 
-    use std::vector::{length, borrow, slice, append};
-    use aptos_std::aptos_hash::keccak256;
-    use verifier_addr::cpu_oods_7;
-    use verifier_addr::merkle_statement_verifier;
-    use verifier_addr::fri_statement_verifier_7;
-    use verifier_addr::memory_access_utils_7::{get_fri_step_sizes};
-    use lib_addr::math_mod::{mod_mul, mod_exp};
-    use verifier_addr::fact_registry::is_valid;
+
     use verifier_addr::verifier_channel::{init_channel, read_hash, send_field_elements, read_field_element,
         verify_proof_of_work, send_random_queries
     };

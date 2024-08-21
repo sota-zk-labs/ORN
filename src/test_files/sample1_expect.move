@@ -1,4 +1,14 @@
 module verifier_addr::fri_layer {
+    use aptos_std::aptos_hash::keccak256;
+    use aptos_std::from_bcs::to_u256;
+    use aptos_std::math128::pow;
+
+    use lib_addr::bitwise::not;
+    use lib_addr::endia_encode::to_big_endian;
+    use lib_addr::memory::{Memory, mload, mloadrange, mstore};
+    use verifier_addr::fri_transform::{transform_coset};
+    use verifier_addr::prime_field_element_0::{fmul, fpow, k_modulus, one_val};
+
     // This line is used for generating constants DO NOT REMOVE!
     // 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000000000000000000000
     const COMMITMENT_MASK: u256 = 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000000000000000000000;
@@ -20,15 +30,7 @@ module verifier_addr::fri_layer {
     const MERKLE_SLOT_SIZE_IN_BYTES: u64 = 0x40;
     // End of generating constants!
 
-    use aptos_std::aptos_hash::keccak256;
-    use aptos_std::from_bcs::to_u256;
-    use aptos_std::math128::pow;
 
-    use lib_addr::bitwise::not;
-    use lib_addr::endia_encode::to_big_endian;
-    use lib_addr::memory::{Memory, mload, mloadrange, mstore};
-    use verifier_addr::fri_transform::{transform_coset};
-    use verifier_addr::prime_field_element_0::{fmul, fpow, k_modulus, one_val};
     /*
           Gathers the "cosetSize" elements that belong the coset of the first element in the FRI queue.
           The elements are written to 'evaluationsOnCosetPtr'.

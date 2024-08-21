@@ -1,5 +1,4 @@
 use std::collections::{HashMap, HashSet};
-
 use const_format::concatcp;
 use fancy_regex::{Captures, Regex};
 
@@ -11,6 +10,7 @@ const IMPORT_STATEMENT_PATTERN: &str = r"\s*use\s+.*::([^;]+);";
 const CONST_BLOCK_BEGIN: &str =
     "    // This line is used for generating constants DO NOT REMOVE!\n";
 const CONST_BLOCK_END: &str = "    // End of generating constants!\n\n";
+const IMPORT_BLOCK: &str = r"((\n\s*use\s+[^\n]+;)|(\s+\/\/.*))+\n";
 
 fn create_const_block(consts: &HashSet<String>, table: &HashMap<String, ConstantValue>) -> String {
     if consts.is_empty() {
@@ -163,22 +163,37 @@ pub fn gen_consts(file_content: &str, table: &HashMap<String, ConstantValue>) ->
     result = remove_import(&result, table);
 
     // insert constants block
-    if !consts.is_empty() {
-        // replace old constants block with new block
-        if result.contains(format!("{}{}", CONST_BLOCK_BEGIN, CONST_BLOCK_END).as_str()) {
-            result = result.replace(format!("{}{}", CONST_BLOCK_BEGIN, CONST_BLOCK_END).as_str(), create_const_block(&consts, table).as_str());
-        } else {
-            // insert into the beginning of the module
-            let mut first_left_cb = result.find('{').unwrap();
-            while result.as_bytes()[first_left_cb] != u8::try_from('\n').unwrap() {
-                first_left_cb += 1;
-            }
-            result.insert_str(
-                first_left_cb + 1,
-                create_const_block(&consts, table).as_str(),
-            );
-        }
+    if consts.is_empty() {
+        return result;
     }
+
+    let const_block = create_const_block(&consts, table);
+    // replace old constants block with new block
+    if result.contains(format!("{}{}", CONST_BLOCK_BEGIN, CONST_BLOCK_END).as_str()) {
+        return result.replace(format!("{}{}", CONST_BLOCK_BEGIN, CONST_BLOCK_END).as_str(), &const_block);
+    }
+    let mut contain_import_block = false;
+    result = Regex::new(&IMPORT_BLOCK)
+        .unwrap()
+        .replace(&result, |caps: &Captures| {
+            contain_import_block = true;
+            let whole = caps[0].to_string();
+            whole + "\n" + &const_block + "\n"
+        })
+        .to_string();
+    if contain_import_block {
+        return result;
+    }
+
+    // insert into the beginning of the module
+    let mut first_left_cb = result.find('{').unwrap();
+    while result.as_bytes()[first_left_cb] != u8::try_from('\n').unwrap() {
+        first_left_cb += 1;
+    }
+    result.insert_str(
+        first_left_cb + 1,
+        &const_block,
+    );
 
     result
 }
