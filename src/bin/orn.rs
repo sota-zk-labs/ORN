@@ -56,7 +56,6 @@ async fn main() {
 
 async fn update_const(paths: &Vec<String>) {
     let constant_values = get_constant_values();
-    println!("constant_values = {:#?}", constant_values);
 
     let file_manager = FileManager::load(paths).unwrap();
     file_manager

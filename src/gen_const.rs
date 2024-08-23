@@ -110,10 +110,13 @@ pub fn get_const_funcs_regex(table: &HashMap<String, ConstantValue>) -> String {
 }
 
 pub fn get_const_regex(table: &HashMap<String, ConstantValue>) -> String {
-    let result = table
+    let mut result = table
         .iter()
         .map(|(k, _)| k)
-        .fold("".to_string(), |acc, k| format!("{}({})|", acc, k));
+        .collect::<Vec<_>>();
+    result.sort();
+    result.reverse();
+    let result = result.into_iter().fold("".to_string(), |acc, k| format!("{}({})|", acc, k));
     result[0..result.len() - 1].to_string()
 }
 
@@ -214,6 +217,13 @@ mod test {
     fn test_gen_consts_sample2() {
         let file_content = include_str!("./test_files/sample2_input.move");
         let refined_content = include_str!("./test_files/sample2_expect.move");
+        let output = gen_consts(file_content, &get_constant_values());
+        assert_eq!(output, refined_content, "failed");
+    }
+    #[test]
+    fn test_gen_consts_sample3() {
+        let file_content = include_str!("./test_files/sample3_input.move");
+        let refined_content = include_str!("./test_files/sample3_expect.move");
         let output = gen_consts(file_content, &get_constant_values());
         assert_eq!(output, refined_content, "failed");
     }
