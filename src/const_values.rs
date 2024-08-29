@@ -1,6 +1,7 @@
+use std::collections::HashMap;
+
 use math_parse::MathParse;
 use serde::Deserialize;
-use std::collections::HashMap;
 
 const CONSTANT_VALUES: &str = include_str!("const_values.toml");
 const MAX_DEPTH: usize = 5;
