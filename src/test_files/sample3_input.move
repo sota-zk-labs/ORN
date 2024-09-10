@@ -8,7 +8,6 @@ module verifier_addr::prime_field_element_0 {
     const MAX_U128: u256 = 0xffffffffffffffffffffffffffffffff;
     // End of generating constants!
 
-
     // formula: a * b = q * K_MODULUS + r
     // split a, b into two limbs: a = a_0 * 2 ^ 128 + a_1
     // let ab = a * b = (a_0 * 2 ^ 128 + a_1) * (b_0 * 2 ^ 128 + b_1)

@@ -1,5 +1,6 @@
-use glob::{GlobError, PatternError};
 use std::io::Error;
+
+use glob::{GlobError, PatternError};
 
 #[derive(thiserror::Error, Debug)]
 pub enum CoreError {

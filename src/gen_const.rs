@@ -1,8 +1,9 @@
+use std::collections::{HashMap, HashSet};
+
 use const_format::concatcp;
 use env_logger::Env;
 use fancy_regex::{Captures, Regex};
 use log::warn;
-use std::collections::{HashMap, HashSet};
 
 use crate::const_values::ConstantValue;
 
