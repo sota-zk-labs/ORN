@@ -21,12 +21,12 @@ fn create_const_block(consts: &HashSet<String>, table: &HashMap<String, Constant
     }
 
     let table_keys: Vec<_> = table.keys().cloned().collect();
-    let consts_un_used: Vec<_> = table_keys
+    let consts_unused: Vec<_> = table_keys
         .into_iter()
         .filter(|item| !consts.contains(item))
         .collect();
-    for e in consts_un_used {
-        warn!("Un used: {}", e);
+    for e in consts_unused {
+        warn!("Unused: {}", e);
     }
 
     let mut consts: Vec<_> = consts.iter().collect();
