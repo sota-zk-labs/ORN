@@ -1,4 +1,5 @@
 use std::collections::{HashMap, HashSet};
+
 use const_format::concatcp;
 use fancy_regex::{Captures, Regex};
 
@@ -12,10 +13,22 @@ const CONST_BLOCK_BEGIN: &str =
 const CONST_BLOCK_END: &str = "    // End of generating constants!\n\n";
 const IMPORT_BLOCK: &str = r"((\n\s*use\s+[^\n]+;)|(\s+\/\/.*))+\n";
 
+fn warn_const_unused(consts: &HashSet<String>, table: &HashMap<String, ConstantValue>) {
+    let table_keys: Vec<_> = table.keys().collect();
+    let consts_unused: Vec<_> = table_keys
+        .into_iter()
+        .filter(|item| !consts.contains(*item))
+        .collect();
+    for e in consts_unused {
+        println!("Unused: {}", e);
+    }
+}
+
 fn create_const_block(consts: &HashSet<String>, table: &HashMap<String, ConstantValue>) -> String {
     if consts.is_empty() {
         return "".to_string();
     }
+
     let mut consts: Vec<_> = consts.iter().collect();
     consts.sort();
 
@@ -94,7 +107,7 @@ pub fn get_import_regex(table: &HashMap<String, ConstantValue>) -> String {
         get_const_regex(table),
         any_character,
     )
-        .to_string()
+    .to_string()
 }
 
 pub fn get_const_funcs_regex(table: &HashMap<String, ConstantValue>) -> String {
@@ -106,17 +119,16 @@ pub fn get_const_funcs_regex(table: &HashMap<String, ConstantValue>) -> String {
         ANY_CHAR_PATTERN,
         r"*\}"
     )
-        .to_string()
+    .to_string()
 }
 
 pub fn get_const_regex(table: &HashMap<String, ConstantValue>) -> String {
-    let mut result = table
-        .iter()
-        .map(|(k, _)| k)
-        .collect::<Vec<_>>();
+    let mut result = table.iter().map(|(k, _)| k).collect::<Vec<_>>();
     result.sort();
     result.reverse();
-    let result = result.into_iter().fold("".to_string(), |acc, k| format!("{}({})|", acc, k));
+    let result = result
+        .into_iter()
+        .fold("".to_string(), |acc, k| format!("{}({})|", acc, k));
     result[0..result.len() - 1].to_string()
 }
 
@@ -130,15 +142,18 @@ pub fn gen_consts(file_content: &str, table: &HashMap<String, ConstantValue>) ->
             ""
         })
         .to_string();
+
     // remove constants block if it was generated before
     result = Regex::new(concatcp!(
         CONST_BLOCK_BEGIN,
         ANY_CHAR_PATTERN,
         CONST_BLOCK_END
     ))
-        .unwrap()
-        .replace_all(&result, |_: &Captures| format!("{}{}", CONST_BLOCK_BEGIN, CONST_BLOCK_END))
-        .to_string();
+    .unwrap()
+    .replace_all(&result, |_: &Captures| {
+        format!("{}{}", CONST_BLOCK_BEGIN, CONST_BLOCK_END)
+    })
+    .to_string();
 
     // remove '()' if it's a constant function call
     let mut consts = HashSet::<String>::new();
@@ -171,12 +186,17 @@ pub fn gen_consts(file_content: &str, table: &HashMap<String, ConstantValue>) ->
     }
 
     let const_block = create_const_block(&consts, table);
+    warn_const_unused(&consts, table);
     // replace old constants block with new block
     if result.contains(format!("{}{}", CONST_BLOCK_BEGIN, CONST_BLOCK_END).as_str()) {
-        return result.replace(format!("{}{}", CONST_BLOCK_BEGIN, CONST_BLOCK_END).as_str(), &const_block);
+        return result.replace(
+            format!("{}{}", CONST_BLOCK_BEGIN, CONST_BLOCK_END).as_str(),
+            &const_block,
+        );
     }
+
     let mut contain_import_block = false;
-    result = Regex::new(&IMPORT_BLOCK)
+    result = Regex::new(IMPORT_BLOCK)
         .unwrap()
         .replace(&result, |caps: &Captures| {
             contain_import_block = true;
@@ -184,6 +204,7 @@ pub fn gen_consts(file_content: &str, table: &HashMap<String, ConstantValue>) ->
             whole + "\n" + &const_block + "\n"
         })
         .to_string();
+
     if contain_import_block {
         return result;
     }
@@ -193,10 +214,7 @@ pub fn gen_consts(file_content: &str, table: &HashMap<String, ConstantValue>) ->
     while result.as_bytes()[first_left_cb] != u8::try_from('\n').unwrap() {
         first_left_cb += 1;
     }
-    result.insert_str(
-        first_left_cb + 1,
-        &const_block,
-    );
+    result.insert_str(first_left_cb + 1, &const_block);
 
     result
 }
