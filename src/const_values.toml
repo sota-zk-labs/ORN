@@ -10,10 +10,12 @@ BYTES_PER_FIELD_ELEMENT = { type = "u64", value = "32", comment = "32" }
 BYTES_PER_PROOF = { type = "u64", value = "48", comment = "48" }
 CHECKPOINT1_CFFL = { type = "u8", value = "1", comment = "1" }
 CHECKPOINT1_FB = { type = "u8", value = "4", comment = "4" }
+CHECKPOINT1_OCC = { type = "u8", value = "100", comment = "100" }
 CHECKPOINT1_VP = { type = "u8", value = "6", comment = "6" }
 CHECKPOINT1_VPAR = { type = "u8", value = "10", comment = "10" }
 CHECKPOINT2_CFFL = { type = "u8", value = "2", comment = "2" }
 CHECKPOINT2_FB = { type = "u8", value = "5", comment = "5" }
+CHECKPOINT2_OCC = { type = "u8", value = "101", comment = "101" }
 CHECKPOINT2_VP = { type = "u8", value = "7", comment = "7" }
 CHECKPOINT2_VPAR = { type = "u8", value = "11", comment = "11" }
 CHECKPOINT3_CFFL = { type = "u8", value = "3", comment = "3" }
@@ -28,6 +30,7 @@ CONFIG_HASH_TAG = { type = "vector<u8>", value = 'b"STARKNET_1.0_STARKNET_CONFIG
 CONSTRAINTS_DEGREE_BOUND = { type = "u64", value = "2", comment = "2" }
 CONTINUOUS_PAGE = { type = "u256", value = "1", comment = "1" }
 CPU_OODS_CP2_ITERATION_LENGTH = { type = "u64", value = "8", comment = "8" }
+CTX_LEN = { type = "u64", value = "404", comment = "404" }
 DILUTED_N_BITS = { type = "u256", value = "16", comment = "16" }
 DILUTED_SPACING = { type = "u8", value = "4", comment = "4" }
 EADDRESS_OF_PAGE_0_IS_NOT_PART_OF_THE_PUBLIC_INPUT = { type = "u64", value = "1", comment = "1" }
@@ -127,6 +130,7 @@ EOUT_OF_RANGE_OUTPUT_STOP_PTR = { type = "u64", value = "2", comment = "2" }
 EOVERFLOW_PROTECTION_FAILED = { type = "u64", value = "100", comment = "100" }
 EPOINT_EVALUATION_PRECOMPILE_CALL_FAILED = { type = "u64", value = "32769", comment = "32769" }
 EPRIME_IS_TOO_BIG = { type = "u64", value = "5", comment = "5" }
+EPRODUCT_INVERSE_ZERO = { type = "u64", value = "0x0001", comment = "0x0001" }
 EPROOFS_MAY_NOT_BE_PURELY_BASED_ON_POW = { type = "u64", value = "6", comment = "6" }
 EPROOF_OF_WORK_BITS_MUST_BE_AT_MOST_50 = { type = "u64", value = "4", comment = "4" }
 EPROOF_OF_WORK_CHECK_FAILED = { type = "u64", value = "2", comment = "2" }
@@ -338,8 +342,12 @@ POSEIDON__ROW_RATIO = { type = "u256", value = "128", comment = "128" }
 PROGRAM_HASH_TAG = { type = "vector<u8>", value = 'b"STARKNET_1.0_INIT_PROGRAM_HASH_UINT"', comment = "Random storage slot tags" }
 PROGRAM_SIZE = { type = "u256", value = "728", comment = "728" }
 PROOF_BYTES_LENGTH = { type = "u256", value = "48", comment = "48" }
+PROOF_PARAMS_FRI_LAST_LAYER_LOG_DEG_BOUND_OFFSET = { type = "u64", value = "3", comment = "3" }
 PROOF_PARAMS_FRI_STEPS_OFFSET = { type = "u64", value = "5", comment = "5" }
+PROOF_PARAMS_LOG_BLOWUP_FACTOR_OFFSET = { type = "u64", value = "1", comment = "1" }
 PROOF_PARAMS_N_FRI_STEPS_OFFSET = { type = "u64", value = "4", comment = "4" }
+PROOF_PARAMS_N_QUERIES_OFFSET = { type = "u64", value = "0", comment = "0" }
+PROOF_PARAMS_PROOF_OF_WORK_BITS_OFFSET = { type = "u64", value = "2", comment = "2" }
 PUBLIC_MEMORY_STEP = { type = "u256", value = "16", comment = "16" }
 RANGE_CHECK_BUILTIN_BIT = { type = "u256", value = "2", comment = "2" }
 RANGE_CHECK_BUILTIN_RATIO = { type = "u256", value = "8", comment = "8" }
@@ -352,7 +360,3 @@ TWO_COMMITMENTS_SIZE_IN_BYTES = { type = "u64", value = "64", comment = "64" }
 USE_KZG_DA_OFFSET = { type = "u64", value = "5", comment = "5" }
 VERIFIER_ADDRESS_TAG = { type = "vector<u8>", value = 'b"STARKNET_1.0_INIT_VERIFIER_ADDRESS"', comment = "STARKNET_1.0_INIT_VERIFIER_ADDRESS" }
 VERSIONED_HASH_VERSION_KZG = { type = "vector<u8>", value = 'x"01"', comment = "01" }
-PROOF_PARAMS_N_QUERIES_OFFSET = { type = "u64", value = "0", comment = "0" }
-PROOF_PARAMS_LOG_BLOWUP_FACTOR_OFFSET = { type = "u64", value = "1", comment = "1" }
-PROOF_PARAMS_PROOF_OF_WORK_BITS_OFFSET = { type = "u64", value = "2", comment = "2" }
-PROOF_PARAMS_FRI_LAST_LAYER_LOG_DEG_BOUND_OFFSET = { type = "u64", value = "3", comment = "3" }
